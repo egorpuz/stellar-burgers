@@ -24,11 +24,14 @@ import { Modal } from '../modal';
 import { OrderInfo } from '../order-info';
 import { IngredientDetails } from '../ingredient-details';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { resetConstructor } from '../../services/slices/constructorSlice';
+import { RootState } from 'src/services/store';
 
 export default function App() {
-  const isAuthenticated = Boolean(localStorage.getItem('accessToken'));
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;

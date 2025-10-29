@@ -9,11 +9,13 @@ import {
 import { constructorReducer } from './slices/constructorSlice';
 import { ingredientsReducer } from './slices/ingredientsSlice';
 import { feedReducer } from './slices/feedSlice';
+import { authReducer } from './slices/authSlice';
 
 const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   constructor: constructorReducer,
-  feed: feedReducer
+  feed: feedReducer,
+  auth: authReducer
 });
 
 const store = configureStore({

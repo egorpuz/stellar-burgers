@@ -17,6 +17,8 @@ export const IngredientsCategory = forwardRef<
     const { bun, ingredients } = burgerConstructor;
     const counters: Record<string, number> = {};
 
+    if (!ingredients) return counters;
+
     ingredients.forEach((ingredient: TIngredient) => {
       if (!counters[ingredient._id]) counters[ingredient._id] = 0;
       counters[ingredient._id]++;
