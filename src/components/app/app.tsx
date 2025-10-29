@@ -23,14 +23,22 @@ import { NotFound404 } from '../../pages/not-fount-404';
 import { Modal } from '../modal';
 import { OrderInfo } from '../order-info';
 import { IngredientDetails } from '../ingredient-details';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { resetConstructor } from '../../services/slices/constructorSlice';
 
 export default function App() {
   const isAuthenticated = Boolean(localStorage.getItem('accessToken'));
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;
+  const dispatch = useDispatch();
 
   const handleModalClose = () => navigate(-1);
+
+  useEffect(() => {
+    dispatch(resetConstructor());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>

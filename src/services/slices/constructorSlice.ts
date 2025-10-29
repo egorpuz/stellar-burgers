@@ -42,7 +42,7 @@ const constructorSlice = createSlice({
     },
     removeIngredient(state, action: PayloadAction<string>) {
       state.ingredients = state.ingredients.filter(
-        (i) => i._id !== action.payload
+        (i) => i.id !== action.payload
       );
     },
     closeOrder(state) {
@@ -51,7 +51,29 @@ const constructorSlice = createSlice({
     clearConstructor(state) {
       state.bun = null;
       state.ingredients = [];
-    }
+    },
+    moveIngredient: (
+      state,
+      action: PayloadAction<{ index: number; direction: 'up' | 'down' }>
+    ) => {
+      const { index, direction } = action.payload;
+      const ingredients = [...state.ingredients];
+
+      if (direction === 'up' && index > 0) {
+        [ingredients[index - 1], ingredients[index]] = [
+          ingredients[index],
+          ingredients[index - 1]
+        ];
+      } else if (direction === 'down' && index < ingredients.length - 1) {
+        [ingredients[index], ingredients[index + 1]] = [
+          ingredients[index + 1],
+          ingredients[index]
+        ];
+      }
+
+      state.ingredients = ingredients;
+    },
+    resetConstructor: () => initialState
   },
   extraReducers: (builder) => {
     builder
@@ -78,7 +100,9 @@ export const {
   addIngredient,
   removeIngredient,
   closeOrder,
-  clearConstructor
+  clearConstructor,
+  resetConstructor,
+  moveIngredient
 } = constructorSlice.actions;
 
 export const constructorReducer = constructorSlice.reducer;

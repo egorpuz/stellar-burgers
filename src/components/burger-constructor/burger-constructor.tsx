@@ -28,6 +28,13 @@ export const BurgerConstructor: FC = () => {
   );
 
   const onOrderClick = () => {
+    const isAuthenticated = Boolean(localStorage.getItem('accessToken'));
+
+    if (!isAuthenticated) {
+      window.location.href = '/login';
+      return;
+    }
+
     if (!bun || orderRequest) return;
     const ingredientIds = ingredients.map((item) => item._id);
     dispatch(createOrder(ingredientIds));
