@@ -17,6 +17,10 @@ export const BurgerConstructor: FC = () => {
     orderModalData
   } = useSelector((state: RootState) => state.constructor);
 
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+
   const price = useMemo(
     () =>
       (bun ? bun.price * 2 : 0) +
@@ -28,8 +32,6 @@ export const BurgerConstructor: FC = () => {
   );
 
   const onOrderClick = () => {
-    const isAuthenticated = Boolean(localStorage.getItem('accessToken'));
-
     if (!isAuthenticated) {
       window.location.href = '/login';
       return;

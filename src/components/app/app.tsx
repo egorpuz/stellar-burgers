@@ -26,21 +26,39 @@ import { IngredientDetails } from '../ingredient-details';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetConstructor } from '../../services/slices/constructorSlice';
-import { RootState } from 'src/services/store';
+import { setUser } from '../../services/slices/authSlice';
+import { getUserApi } from '../../utils/burger-api';
+import { RootState, AppDispatch } from 'src/services/store';
 
 export default function App() {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleModalClose = () => navigate(-1);
 
   useEffect(() => {
     dispatch(resetConstructor());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('refreshToken');
+    if (token) {
+      getUserApi()
+        .then((data) => {
+          if (data?.user) {
+            dispatch(setUser(data.user));
+          }
+        })
+        .catch((err) => {
+          console.error('Ошибка загрузки пользователя:', err);
+        });
+    }
   }, [dispatch]);
 
   return (

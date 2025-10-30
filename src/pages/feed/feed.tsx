@@ -1,15 +1,26 @@
-import { Preloader } from '@ui';
+import { FC, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../../services/store';
+import { getFeeds } from '../../services/slices/feedSlice';
 import { FeedUI } from '@ui-pages';
-import { FC } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/services/store';
+import { Preloader } from '@ui';
 
 export const Feed: FC = () => {
-  const { orders } = useSelector((state: RootState) => state.feed);
+  const dispatch = useDispatch<AppDispatch>();
 
-  if (!orders.length) {
+  const { orders, isLoading } = useSelector((state: RootState) => state.feed);
+
+  useEffect(() => {
+    dispatch(getFeeds());
+  }, [dispatch]);
+
+  if (isLoading) {
     return <Preloader />;
   }
 
-  return <FeedUI orders={orders} handleGetFeeds={() => {}} />;
+  if (!orders.length) {
+    return <p className='text-center mt-8'>Заказов пока нет</p>;
+  }
+
+  return <FeedUI orders={orders} handleGetFeeds={() => dispatch(getFeeds())} />;
 };

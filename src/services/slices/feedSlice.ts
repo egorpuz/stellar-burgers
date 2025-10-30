@@ -1,5 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { getFeedsApi } from '@api';
+import { createOrder } from '../slices/constructorSlice'; // 👈 импортируешь createOrder
 import { TOrder } from '@utils-types';
 
 type FeedState = {
@@ -40,7 +41,18 @@ const feedSlice = createSlice({
       .addCase(getFeeds.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
-      });
+      })
+      .addCase(
+        createOrder.fulfilled,
+        (state, action: PayloadAction<TOrder>) => {
+          const newOrder = action.payload;
+
+          state.orders.unshift(newOrder);
+
+          state.total += 1;
+          state.totalToday += 1;
+        }
+      );
   }
 });
 
