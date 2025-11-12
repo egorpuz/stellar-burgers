@@ -68,9 +68,9 @@ export default function App() {
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
-        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route path='/feed/:id' element={<OrderInfo />} />{' '}
+        {/* 👈 :number → :id */}
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
-
         <Route
           path='/login'
           element={isAuthenticated ? <Navigate to='/' replace /> : <Login />}
@@ -107,14 +107,14 @@ export default function App() {
             )
           }
         />
-        <Route path='/profile/orders/:number' element={<OrderInfo />} />
+        <Route path='/profile/orders/:id' element={<OrderInfo />} />
         <Route path='*' element={<NotFound404 />} />
       </Routes>
 
       {background && (
         <Routes>
           <Route
-            path='/feed/:number'
+            path='/feed/:id'
             element={
               <Modal title='Детали заказа' onClose={handleModalClose}>
                 <OrderInfo />
@@ -130,7 +130,7 @@ export default function App() {
             }
           />
           <Route
-            path='/profile/orders/:number'
+            path='/profile/orders/:id'
             element={
               isAuthenticated ? (
                 <Modal title='Детали вашего заказа' onClose={handleModalClose}>
