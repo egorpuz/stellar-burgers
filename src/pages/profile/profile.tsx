@@ -1,5 +1,5 @@
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/store';
 import { RootState } from '../../services/store';
 import { setUser } from '../../services/slices/authSlice';
 import { ProfileUI } from '@ui-pages';

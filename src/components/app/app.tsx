@@ -24,31 +24,30 @@ import { Modal } from '../modal';
 import { OrderInfo } from '../order-info';
 import { IngredientDetails } from '../ingredient-details';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/store';
 import { resetConstructor } from '../../services/slices/constructorSlice';
-import { setUser } from '../../services/slices/authSlice';
+import { initializeAuth, setUser } from '../../services/slices/authSlice';
 import { getUserApi } from '../../utils/burger-api';
-import { RootState, AppDispatch } from 'src/services/store';
 
 export default function App() {
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
 
   const handleModalClose = () => navigate(-1);
 
+  // Инициализация auth при загрузке приложения
   useEffect(() => {
-    dispatch(resetConstructor());
-  }, [dispatch]);
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const isAuth = Boolean(localStorage.getItem('refreshToken'));
 
-  useEffect(() => {
-    const token = localStorage.getItem('refreshToken');
-    if (token) {
+    dispatch(initializeAuth({ user, isAuthenticated: isAuth }));
+
+    // Если есть токен, загружаем свежие данные пользователя
+    if (isAuth) {
       getUserApi()
         .then((data) => {
           if (data?.user) {
@@ -61,6 +60,10 @@ export default function App() {
     }
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(resetConstructor());
+  }, [dispatch]);
+
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -68,8 +71,7 @@ export default function App() {
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
-        <Route path='/feed/:id' element={<OrderInfo />} />{' '}
-        {/* 👈 :number → :id */}
+        <Route path='/feed/:id' element={<OrderInfo />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route
           path='/login'

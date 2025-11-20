@@ -26,8 +26,8 @@ export const Login: FC = () => {
       dispatch(setUser(data.user));
 
       navigate('/profile');
-    } catch (err: any) {
-      setError(err.message || 'Произошла ошибка при входе');
+    } catch (err) {
+      setError('Произошла ошибка при входе');
     }
   };
 

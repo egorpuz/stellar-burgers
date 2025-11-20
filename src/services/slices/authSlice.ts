@@ -7,8 +7,8 @@ type AuthState = {
 };
 
 const initialState: AuthState = {
-  isAuthenticated: Boolean(localStorage.getItem('refreshToken')),
-  user: JSON.parse(localStorage.getItem('user') || 'null')
+  isAuthenticated: false,
+  user: null
 };
 
 const authSlice = createSlice({
@@ -18,16 +18,20 @@ const authSlice = createSlice({
     setUser(state, action: PayloadAction<TUser>) {
       state.user = action.payload;
       state.isAuthenticated = true;
-      localStorage.setItem('user', JSON.stringify(action.payload));
     },
     logout(state) {
       state.user = null;
       state.isAuthenticated = false;
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('user');
+    },
+    initializeAuth(
+      state,
+      action: PayloadAction<{ user: TUser | null; isAuthenticated: boolean }>
+    ) {
+      state.user = action.payload.user;
+      state.isAuthenticated = action.payload.isAuthenticated;
     }
   }
 });
 
-export const { setUser, logout } = authSlice.actions;
+export const { setUser, logout, initializeAuth } = authSlice.actions;
 export const authReducer = authSlice.reducer;

@@ -1,8 +1,7 @@
 import { ProfileOrdersUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/services/store';
+import { useSelector } from '../../services/store';
 import { getOrdersApi } from '../../utils/burger-api';
 import { Preloader } from '@ui';
 
@@ -10,13 +9,12 @@ export const ProfileOrders: FC = () => {
   const [orders, setOrders] = useState<TOrder[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
     if (isAuthenticated) {
       setLoading(true);
+
       getOrdersApi()
         .then((data) => {
           setOrders(data);
@@ -34,5 +32,14 @@ export const ProfileOrders: FC = () => {
     return <Preloader />;
   }
 
-  return <ProfileOrdersUI orders={orders} />;
+  if (!orders.length) {
+    return <div>Нет заказов</div>;
+  }
+
+  return (
+    <>
+      {console.log('orders:', orders, 'length:', orders.length)}
+      <ProfileOrdersUI orders={orders} />
+    </>
+  );
 };

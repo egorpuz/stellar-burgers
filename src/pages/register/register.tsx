@@ -27,8 +27,8 @@ export const Register: FC = () => {
       dispatch(setUser(data.user));
 
       navigate('/profile');
-    } catch (err: any) {
-      setError(err.message || 'Произошла ошибка при регистрации');
+    } catch (err) {
+      setError('Произошла ошибка при регистрации');
     }
   };
 
