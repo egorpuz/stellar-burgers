@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/store';
 import { logout } from '../../services/slices/authSlice';
 import { ProfileMenuUI } from '../ui/profile-menu';
 

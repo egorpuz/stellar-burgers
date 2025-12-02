@@ -4,7 +4,7 @@ import { registerUserApi } from '../../utils/burger-api';
 import { useNavigate } from 'react-router-dom';
 import { setCookie } from '../../utils/cookie';
 import { setUser } from '../../services/slices/authSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/store';
 
 export const Register: FC = () => {
   const [userName, setUserName] = useState('');

@@ -3,7 +3,7 @@ import { LoginUI } from '@ui-pages';
 import { loginUserApi } from '../../utils/burger-api';
 import { useNavigate } from 'react-router-dom';
 import { setCookie } from '../../utils/cookie';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/store';
 import { setUser } from '../../services/slices/authSlice';
 
 export const Login: FC = () => {
