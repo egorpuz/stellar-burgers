@@ -1,13 +1,7 @@
 import '../../index.css';
 import styles from './app.module.css';
 
-import {
-  Routes,
-  Route,
-  useLocation,
-  useNavigate,
-  Navigate
-} from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import { AppHeader } from '@components';
 import { ConstructorPage } from '@pages';
@@ -23,15 +17,14 @@ import { NotFound404 } from '../../pages/not-fount-404';
 import { Modal } from '../modal';
 import { OrderInfo } from '../order-info';
 import { IngredientDetails } from '../ingredient-details';
+import { ProtectedRoute } from '../protected-route/protected-route';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from '../../services/store';
+import { useDispatch } from '../../services/store';
 import { resetConstructor } from '../../services/slices/constructorSlice';
 import { initializeAuth, setUser } from '../../services/slices/authSlice';
 import { getUserApi } from '../../utils/burger-api';
 
 export default function App() {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;
@@ -39,14 +32,12 @@ export default function App() {
 
   const handleModalClose = () => navigate(-1);
 
-  // Инициализация auth при загрузке приложения
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || 'null');
     const isAuth = Boolean(localStorage.getItem('refreshToken'));
 
     dispatch(initializeAuth({ user, isAuthenticated: isAuth }));
 
-    // Если есть токен, загружаем свежие данные пользователя
     if (isAuth) {
       getUserApi()
         .then((data) => {
@@ -73,43 +64,65 @@ export default function App() {
         <Route path='/feed' element={<Feed />} />
         <Route path='/feed/:id' element={<OrderInfo />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
+
         <Route
           path='/login'
-          element={isAuthenticated ? <Navigate to='/' replace /> : <Login />}
+          element={
+            <ProtectedRoute requireAuth={false}>
+              <Login />
+            </ProtectedRoute>
+          }
         />
         <Route
           path='/register'
-          element={isAuthenticated ? <Navigate to='/' replace /> : <Register />}
+          element={
+            <ProtectedRoute requireAuth={false}>
+              <Register />
+            </ProtectedRoute>
+          }
         />
         <Route
           path='/forgot-password'
           element={
-            isAuthenticated ? <Navigate to='/' replace /> : <ForgotPassword />
+            <ProtectedRoute requireAuth={false}>
+              <ForgotPassword />
+            </ProtectedRoute>
           }
         />
         <Route
           path='/reset-password'
           element={
-            isAuthenticated ? <Navigate to='/' replace /> : <ResetPassword />
+            <ProtectedRoute requireAuth={false}>
+              <ResetPassword />
+            </ProtectedRoute>
           }
         />
+
         <Route
           path='/profile'
           element={
-            isAuthenticated ? <Profile /> : <Navigate to='/login' replace />
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
           }
         />
         <Route
           path='/profile/orders'
           element={
-            isAuthenticated ? (
+            <ProtectedRoute>
               <ProfileOrders />
-            ) : (
-              <Navigate to='/login' replace />
-            )
+            </ProtectedRoute>
           }
         />
-        <Route path='/profile/orders/:id' element={<OrderInfo />} />
+        <Route
+          path='/profile/orders/:id'
+          element={
+            <ProtectedRoute>
+              <OrderInfo />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path='*' element={<NotFound404 />} />
       </Routes>
 
@@ -134,13 +147,11 @@ export default function App() {
           <Route
             path='/profile/orders/:id'
             element={
-              isAuthenticated ? (
+              <ProtectedRoute>
                 <Modal title='Детали вашего заказа' onClose={handleModalClose}>
                   <OrderInfo />
                 </Modal>
-              ) : (
-                <Navigate to='/login' replace />
-              )
+              </ProtectedRoute>
             }
           />
         </Routes>
