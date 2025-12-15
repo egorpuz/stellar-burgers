@@ -23,6 +23,7 @@ import { useDispatch } from '../../services/store';
 import { resetConstructor } from '../../services/slices/constructorSlice';
 import { initializeAuth, setUser } from '../../services/slices/authSlice';
 import { getUserApi } from '../../utils/burger-api';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 
 export default function App() {
   const location = useLocation();
@@ -53,6 +54,10 @@ export default function App() {
 
   useEffect(() => {
     dispatch(resetConstructor());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
   }, [dispatch]);
 
   return (

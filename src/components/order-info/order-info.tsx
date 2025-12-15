@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { getFeeds } from '../../services/slices/feedSlice';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 import { getOrderByNumberApi } from '../../utils/burger-api';
+import { OrderDetailsUI } from '@ui';
 
 export const OrderInfo: FC = () => {
   const dispatch = useDispatch();
@@ -27,9 +28,6 @@ export const OrderInfo: FC = () => {
   useEffect(() => {
     if (!feedLoading && orders.length === 0) {
       dispatch(getFeeds());
-    }
-    if (!ingredientsLoading && ingredients.length === 0) {
-      dispatch(fetchIngredients());
     }
   }, []);
 
@@ -100,5 +98,10 @@ export const OrderInfo: FC = () => {
     return <Preloader />;
   }
 
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  return (
+    <>
+      <OrderDetailsUI orderNumber={orderInfo.number} />
+      <OrderInfoUI orderInfo={orderInfo} />
+    </>
+  );
 };

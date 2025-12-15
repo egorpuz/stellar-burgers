@@ -4,11 +4,13 @@ import { TUser } from '../../utils/types';
 type AuthState = {
   isAuthenticated: boolean;
   user: TUser | null;
+  isLoading: boolean;
 };
 
 const initialState: AuthState = {
   isAuthenticated: false,
-  user: null
+  user: null,
+  isLoading: true
 };
 
 const authSlice = createSlice({
@@ -29,6 +31,7 @@ const authSlice = createSlice({
     ) {
       state.user = action.payload.user;
       state.isAuthenticated = action.payload.isAuthenticated;
+      state.isLoading = false;
     }
   }
 });

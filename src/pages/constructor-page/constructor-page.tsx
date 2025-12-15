@@ -12,12 +12,6 @@ export const ConstructorPage: FC = () => {
 
   const { items, isLoading, error } = useSelector((state) => state.ingredients);
 
-  useEffect(() => {
-    dispatch(fetchIngredients())
-      .unwrap()
-      .catch((err) => console.error('Ошибка:', err));
-  }, [dispatch]);
-
   if (isLoading) return <Preloader />;
   if (error) return <p>{error}</p>;
 

@@ -4,6 +4,7 @@ import { FC, useEffect, useState } from 'react';
 import { useSelector } from '../../services/store';
 import { getOrdersApi } from '../../utils/burger-api';
 import { Preloader } from '@ui';
+import { OrdersList, ProfileMenu } from '@components';
 
 export const ProfileOrders: FC = () => {
   const [orders, setOrders] = useState<TOrder[]>([]);
@@ -32,13 +33,8 @@ export const ProfileOrders: FC = () => {
     return <Preloader />;
   }
 
-  if (!orders.length) {
-    return <div>Нет заказов</div>;
-  }
-
   return (
     <>
-      {console.log('orders:', orders, 'length:', orders.length)}
       <ProfileOrdersUI orders={orders} />
     </>
   );

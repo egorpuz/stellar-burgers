@@ -12,6 +12,11 @@ export function ProtectedRoute({
   requireAuth = true
 }: ProtectedRouteProps): ReactElement {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isLoading = useSelector((state) => state.auth.isLoading);
+
+  if (isLoading) {
+    return <div>Загрузка...</div>;
+  }
 
   if (requireAuth && !isAuthenticated) {
     return <Navigate to='/login' replace />;
