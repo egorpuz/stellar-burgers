@@ -86,7 +86,6 @@ const constructorSlice = createSlice({
         (state, action: PayloadAction<TOrder>) => {
           state.bun = null;
           state.ingredients = [];
-          console.log('yes!!');
 
           state.orderModalData = action.payload;
           state.orderRequest = false;

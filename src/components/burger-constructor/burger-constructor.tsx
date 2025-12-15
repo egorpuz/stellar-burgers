@@ -1,4 +1,5 @@
 import { FC, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch, RootState } from '../../services/store';
 import { BurgerConstructorUI } from '@ui';
 import {
@@ -9,6 +10,7 @@ import { TConstructorIngredient } from '@utils-types';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     bun,
@@ -20,6 +22,8 @@ export const BurgerConstructor: FC = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+
+  const isOrderDisabled = !bun || ingredients.length === 0 || orderRequest;
 
   const price = useMemo(
     () =>
@@ -33,7 +37,7 @@ export const BurgerConstructor: FC = () => {
 
   const onOrderClick = () => {
     if (!isAuthenticated) {
-      window.location.href = '/login';
+      navigate('/login');
       return;
     }
 
@@ -54,7 +58,7 @@ export const BurgerConstructor: FC = () => {
       orderModalData={orderModalData}
       onOrderClick={onOrderClick}
       closeOrderModal={closeOrderModalHandler}
-      isAuthenticated={isAuthenticated}
+      isOrderDisabled={isOrderDisabled}
     />
   );
 };

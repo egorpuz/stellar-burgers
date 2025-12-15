@@ -17,7 +17,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   orderModalData,
   onOrderClick,
   closeOrderModal,
-  isAuthenticated
+  isOrderDisabled
 }) => (
   <section className={styles.burger_constructor}>
     {constructorItems.bun ? (
@@ -80,7 +80,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         <CurrencyIcon type='primary' />
       </div>
       <Button
-        disabled={!isAuthenticated}
+        disabled={isOrderDisabled}
         htmlType='button'
         type='primary'
         size='large'
