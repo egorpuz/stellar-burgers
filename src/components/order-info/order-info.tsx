@@ -100,7 +100,6 @@ export const OrderInfo: FC = () => {
 
   return (
     <>
-      <OrderDetailsUI orderNumber={orderInfo.number} />
       <OrderInfoUI orderInfo={orderInfo} />
     </>
   );
