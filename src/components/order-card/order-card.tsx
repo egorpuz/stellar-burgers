@@ -7,14 +7,14 @@ import { OrderCardUI } from '../ui/order-card';
 import { useSelector } from '../../services/store';
 
 const maxIngredients = 6;
-
 export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   const location = useLocation();
-
   const ingredients = useSelector((state) => state.ingredients.items);
 
   const orderInfo = useMemo(() => {
-    const ingredientsInfo = order.ingredients.reduce(
+    const orderIngredients = order.ingredients || [];
+
+    const ingredientsInfo = orderIngredients.reduce(
       (acc: TIngredient[], item: string) => {
         const ingredient = ingredients.find((ing) => ing._id === item);
         if (ingredient) return [...acc, ingredient];
@@ -33,6 +33,7 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
         : 0;
 
     const date = new Date(order.createdAt);
+
     return {
       ...order,
       ingredientsInfo,
