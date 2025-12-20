@@ -42,7 +42,13 @@ export const BurgerConstructor: FC = () => {
     }
 
     if (!bun || orderRequest) return;
-    const ingredientIds = ingredients.map((item) => item._id);
+
+    const ingredientIds = [
+      bun._id,
+      ...ingredients.map((item) => item._id),
+      bun._id
+    ];
+
     dispatch(createOrder(ingredientIds));
   };
 

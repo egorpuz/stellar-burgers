@@ -136,7 +136,7 @@ export default function App() {
           <Route
             path='/feed/:id'
             element={
-              <Modal title='Детали заказа' onClose={handleModalClose}>
+              <Modal onClose={handleModalClose}>
                 <OrderInfo />
               </Modal>
             }
@@ -153,7 +153,7 @@ export default function App() {
             path='/profile/orders/:id'
             element={
               <ProtectedRoute>
-                <Modal title='Детали вашего заказа' onClose={handleModalClose}>
+                <Modal onClose={handleModalClose}>
                   <OrderInfo />
                 </Modal>
               </ProtectedRoute>
