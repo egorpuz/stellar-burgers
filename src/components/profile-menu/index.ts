@@ -1,1 +1,1 @@
-export { ProfileMenu } from './profile-menu';
+export { ProfileMenuContainer as ProfileMenu } from './profile-menu';
