@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["cypress"]
+  },
+  "include": [
+    "../node_modules/cypress",
+    "./**/*.ts"
+, "e2e/trackList/constructor.cy.tsx", "e2e/constructor/constructor.cy.tsx"  ]
+}
