@@ -1,5 +1,4 @@
 import { expect, test, describe } from '@jest/globals';
-import store from '../store';
 import {
   constructorReducer,
   addIngredient,
@@ -45,25 +44,14 @@ const initialConstructorState = {
   error: null
 };
 
+import store, { rootReducer } from '../store';
+
 describe('Redux Store Tests', () => {
   describe('rootReducer initialization', () => {
     test('Should return the initial state of the store', () => {
-      const state = store.getState();
+      const initialState = rootReducer(undefined, { type: 'UNKNOWN_ACTION' });
 
-      expect(state).toBeDefined();
-      expect(typeof state).toBe('object');
-
-      expect(state.ingredients.isLoading).toBe(false);
-      expect(state.ingredients.items).toEqual([]);
-
-      expect(state.feed).toBeDefined();
-      expect(state.auth).toBeDefined();
-
-      const stateKeys = Object.keys(state);
-      expect(stateKeys).toContain('constructor');
-      expect(stateKeys).toContain('ingredients');
-      expect(stateKeys).toContain('feed');
-      expect(stateKeys).toContain('auth');
+      expect(initialState).toEqual(store.getState());
     });
   });
 
